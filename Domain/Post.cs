@@ -2,6 +2,6 @@
 {
     public class Post
     {
-        public string id { get; set; }
+        public string Id { get; set; }
     }
 }

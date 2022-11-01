@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TweeterBackend.installer
 {
-    public interface I_installer
+    public interface IInstaller
     {
-        void InstallerService(IServiceCollection services, IConfiguration Configuration);
+        void InstallerService(IServiceCollection services, IConfiguration configuration);
     }
 }

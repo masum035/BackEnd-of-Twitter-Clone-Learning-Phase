@@ -1,9 +1,12 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TweeterBackend.installer;
+using TweeterBackend.Middlewares;
 using TweeterBackend.Options;
 
 namespace TweeterBackend
@@ -34,6 +37,7 @@ namespace TweeterBackend
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                // HTTP Strict Transport Security Protocol (HSTS)
             }
 
             var swaggerOption = new SwaggerOptions();
@@ -42,7 +46,7 @@ namespace TweeterBackend
             app.UseSwagger(options => { options.RouteTemplate = swaggerOption.JsonRoute; });
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint(swaggerOption.UIEndpoint, swaggerOption.Description);
+                options.SwaggerEndpoint(swaggerOption.UiEndpoint, swaggerOption.Description);
             });
 
             app.UseHttpsRedirection();

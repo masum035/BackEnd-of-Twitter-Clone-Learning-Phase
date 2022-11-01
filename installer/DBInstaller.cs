@@ -6,13 +6,13 @@ using TweeterBackend.Data;
 
 namespace TweeterBackend.installer
 {
-    public class DBInstaller : I_installer
+    public class DbInstaller : IInstaller
     {
-        void I_installer.InstallerService(IServiceCollection services, IConfiguration Configuration)
+        void IInstaller.InstallerService(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

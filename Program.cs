@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TweeterBackend
 {
@@ -21,6 +16,14 @@ namespace TweeterBackend
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureLogging(builder =>
+                {
+                    builder.AddConsole();
+                    // Default port for visualizing the log using Seq https://localhost/5341 
+                    builder.AddSeq(); // From Package Seq.Extension.Logging
+                    // TO visualize the log also start the Seq software
                 });
+
     }
 }

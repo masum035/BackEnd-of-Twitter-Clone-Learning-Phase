@@ -18,7 +18,7 @@ namespace TweeterBackend.Controllers.v1
             _posts = new List<Post>();
             for (int i = 0; i < 5; i++)
             {
-                _posts.Add(new Post { id = Guid.NewGuid().ToString() });
+                _posts.Add(new Post { Id = Guid.NewGuid().ToString() });
             }
         }
 
