@@ -1,12 +1,11 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TweeterBackend.installer;
-using TweeterBackend.Middlewares;
 using TweeterBackend.Options;
 
 namespace TweeterBackend
@@ -60,9 +59,24 @@ namespace TweeterBackend
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/hello/{name:alpha:minlength(3)?}", async context =>
+                {
+                    var name = context.GetRouteValue("name");
+                    await context.Response.WriteAsync($"just testing routing endpoint\nHello {name}");
+                });
+                
+                endpoints.MapGet("/custom/{name:CustomConstraintTest}", async context =>
+                {
+                    var name = context.GetRouteValue("name");
+                    await context.Response.WriteAsync($"From Custom routing endpoint\nHello {name}");
+                });
+                
+                endpoints.MapControllers();
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
                 endpoints.MapRazorPages();
             });
         }

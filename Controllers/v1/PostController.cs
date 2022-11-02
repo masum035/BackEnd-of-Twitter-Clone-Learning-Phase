@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Domain;
 
@@ -30,5 +29,11 @@ namespace TweeterBackend.Controllers.v1
             return Ok(_posts);
         }
 
+        
+        [HttpGet("{name:CustomConstraintTest}")]
+        public string Get(string name)
+        {
+            return $"Hello from Controller {name}";
+        }
     }
 }

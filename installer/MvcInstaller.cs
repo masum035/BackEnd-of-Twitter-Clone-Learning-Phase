@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using TweeterBackend.Middlewares;
+using TweeterBackend.Options;
 
 namespace TweeterBackend.installer
 {
@@ -22,7 +22,10 @@ namespace TweeterBackend.installer
             });
 
             // services.AddResponseCaching();
-
+            services.AddRouting(options =>
+            {
+                options.ConstraintMap.Add("CustomConstraintTest",typeof(CustomRoutingConstraint));
+            });
             services.AddControllersWithViews(); // for MVC
 
             services.AddSwaggerGen(x =>
