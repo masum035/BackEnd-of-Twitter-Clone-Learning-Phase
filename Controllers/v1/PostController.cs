@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Domain;
 
 namespace TweeterBackend.Controllers.v1
 {
-
+    [EnableCors("Version01_CORS_Policy")]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : Controller
