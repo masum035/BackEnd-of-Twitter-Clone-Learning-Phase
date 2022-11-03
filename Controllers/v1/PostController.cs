@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Domain;
+using TweeterBackend.ModelBinding;
 
 namespace TweeterBackend.Controllers.v1
 {
     [EnableCors("Version01_CORS_Policy")]
     [Route("api/[controller]")]
+    [BindProperties(SupportsGet = true)]
+    [Consumes("application/json")]
     [ApiController]
     public class PostController : Controller
     {
         private List<Post> _posts;
-
         public PostController()
         {
             _posts = new List<Post>();
@@ -29,11 +31,18 @@ namespace TweeterBackend.Controllers.v1
             return Ok(_posts);
         }
 
+
+        //[HttpGet("{name:CustomConstraintTest}")]
+        //public string Get(string name)
+        //{
+        //    return $"Hello from Controller {name}";
+        //}
         
-        [HttpGet("{name:CustomConstraintTest}")]
-        public string Get(string name)
+        [HttpGet("modelBindingPath")]
+        public string Get([FromQuery] CustomBinding customBindedInstance)
         {
-            return $"Hello from Controller {name}";
+            return $"id {customBindedInstance.Id} & allrights reserved: {customBindedInstance.AllRight} for cookie value : {customBindedInstance.HelpCookie} with dictionary {customBindedInstance.Locations.Keys}";
         }
+
     }
 }
