@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Domain;
 using TweeterBackend.ModelBinding;
@@ -42,6 +43,33 @@ namespace TweeterBackend.Controllers.v1
         public string Get([FromQuery] CustomBinding customBindedInstance)
         {
             return $"id {customBindedInstance.Id} & allrights reserved: {customBindedInstance.AllRight} for cookie value : {customBindedInstance.HelpCookie} with dictionary {customBindedInstance.Locations.Keys}";
+        }
+
+        // [HttpGet]
+        // public ActionResult<string> Get(string id, bool? isTest)
+        // {
+        //     if (!isTest.HasValue)
+        //     {
+        //         ModelState.AddModelError(nameof(isTest),"isTest is required");
+        //     }
+        //
+        //     if (string.IsNullOrEmpty(id))
+        //     {
+        //         ModelState.AddModelError(nameof(id),"id is required");
+        //     }
+        //
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+        //
+        //     return $"id {id} & isTest {isTest}";
+        // }
+
+        [HttpGet]
+        public ActionResult<string> Get([Required] string id, [Required] bool? isTest)
+        {
+            return $"id {id} & isTest {isTest}";
         }
 
     }
