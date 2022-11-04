@@ -9,6 +9,7 @@ namespace TweeterBackend.installer
     public class MvcInstaller : IInstaller
     {
         public readonly string MyAllowSpecificOrigins = "Version01_CORS_Policy";
+
         void IInstaller.InstallerService(IServiceCollection services, IConfiguration configuration)
         {
 
@@ -25,22 +26,26 @@ namespace TweeterBackend.installer
             // services.AddResponseCaching();
             services.AddRouting(options =>
             {
-                options.ConstraintMap.Add("CustomConstraintTest",typeof(CustomRoutingConstraint));
+                options.ConstraintMap.Add("CustomConstraintTest", typeof(CustomRoutingConstraint));
             });
 
             // services.AddHttpClient();
             // Named Client
-            services.AddHttpClient("weather", client =>
-            {
-                client.BaseAddress = new Uri("http://api.weatherapi.com/v1/astronomy.json");
-            });
-            
+            services.AddHttpClient("weather",
+                client => { client.BaseAddress = new Uri("http://api.weatherapi.com/v1/astronomy.json"); });
+
             services.AddControllersWithViews(); // for MVC
 
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Tweeter Api", Version = "v1" });
             });
-        }
+
+            services.AddSwaggerDocument(configuration =>
+            {
+                configuration.Title = "Tweeter Backend";
+                configuration.DocumentName = "Tweeter Helper document";
+            });
+    }
     }
 }

@@ -48,6 +48,9 @@ namespace TweeterBackend
                 options.SwaggerEndpoint(swaggerOption.UiEndpoint, swaggerOption.Description);
             });
 
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
