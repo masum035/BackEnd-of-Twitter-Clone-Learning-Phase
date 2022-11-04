@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using TweeterBackend.Options;
@@ -26,6 +27,14 @@ namespace TweeterBackend.installer
             {
                 options.ConstraintMap.Add("CustomConstraintTest",typeof(CustomRoutingConstraint));
             });
+
+            // services.AddHttpClient();
+            // Named Client
+            services.AddHttpClient("weather", client =>
+            {
+                client.BaseAddress = new Uri("http://api.weatherapi.com/v1/astronomy.json");
+            });
+            
             services.AddControllersWithViews(); // for MVC
 
             services.AddSwaggerGen(x =>
