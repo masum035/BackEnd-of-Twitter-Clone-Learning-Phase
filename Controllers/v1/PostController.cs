@@ -29,6 +29,7 @@ namespace TweeterBackend.Controllers.v1
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public IActionResult GetResult()
         {
+            throw new AccessViolationException("Violation Exception while accessing the resource.");
             return Ok(_posts);
         }
 

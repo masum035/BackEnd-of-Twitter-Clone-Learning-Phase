@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TweeterBackend.installer;
+using TweeterBackend.Middlewares;
 using TweeterBackend.Options;
 
 namespace TweeterBackend
@@ -57,6 +58,8 @@ namespace TweeterBackend
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionMiddleware>();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/hello/{name:alpha:minlength(3)?}", async context =>
