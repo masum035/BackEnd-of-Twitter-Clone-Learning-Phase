@@ -1,11 +1,18 @@
+using System;
+using System.IO;
+using System.Net;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NLog;
 using TweeterBackend.installer;
+using TweeterBackend.Middlewares;
+using TweeterBackend.Models;
 using TweeterBackend.Options;
 
 namespace TweeterBackend
@@ -14,6 +21,7 @@ namespace TweeterBackend
     {
         public Startup(IConfiguration configuration)
         {
+            // LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -51,6 +59,25 @@ namespace TweeterBackend
             app.UseOpenApi();
             app.UseSwaggerUi3();
 
+            app.UseExceptionHandler(appError =>
+            {
+                appError.Run(async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "application/json";
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if(contextFeature != null)
+                    { 
+                        // logger.LogError($"Something went wrong: {contextFeature.Error}");
+                        await context.Response.WriteAsync(new ErrorDetails()
+                        {
+                            StatusCode = context.Response.StatusCode,
+                            Message = $"Internal Server Error.\nTo resolve issue, check the log file."
+                        }.ToString());
+                    }
+                });
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -67,19 +94,19 @@ namespace TweeterBackend
                     var name = context.GetRouteValue("name");
                     await context.Response.WriteAsync($"just testing routing endpoint\nHello {name}");
                 });
-                
+
                 endpoints.MapGet("/custom/{name:CustomConstraintTest}", async context =>
                 {
                     var name = context.GetRouteValue("name");
                     await context.Response.WriteAsync($"From Custom routing endpoint\nHello {name}");
                 });
-                
+
                 endpoints.MapControllers();
-                
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                
+
                 endpoints.MapRazorPages();
             });
         }

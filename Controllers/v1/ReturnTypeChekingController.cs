@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,8 @@ namespace TweeterBackend.Controllers.v1
             {
                 return BadRequest("null parameter x found");
             }
+
+            throw new Exception("fault happens"); // for checking error
             return Ok($"{x}");
         }
     }

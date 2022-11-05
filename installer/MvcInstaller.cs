@@ -34,8 +34,12 @@ namespace TweeterBackend.installer
             services.AddHttpClient("weather",
                 client => { client.BaseAddress = new Uri("http://api.weatherapi.com/v1/astronomy.json"); });
 
-            services.AddControllersWithViews(); // for MVC
+            services.AddControllersWithViews().AddNewtonsoftJson(); // for MVC with newtonsoft
 
+            // services.AddSingleton<ILoggerManager, LoggerManager>();
+            
+            // services.AddTransient<ExceptionHandlingMiddleware>();
+            
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Tweeter Api", Version = "v1" });
