@@ -47,6 +47,8 @@ namespace TweeterBackend.installer
                     return Policy.NoOpAsync<HttpResponseMessage>();
                 });
 
+            services.Configure<WeatherApiOptions>(configuration.GetSection(WeatherApiOptions.WeatherApiInApsSettings));
+            
             services.AddControllersWithViews(); // for MVC
 
             services.AddSwaggerGen(x =>

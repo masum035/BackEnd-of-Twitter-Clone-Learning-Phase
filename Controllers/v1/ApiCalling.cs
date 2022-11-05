@@ -2,6 +2,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using TweeterBackend.Options;
 
 namespace TweeterBackend.Controllers.v1
 {
@@ -13,17 +16,27 @@ namespace TweeterBackend.Controllers.v1
     public class ApiCalling : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
+        private WeatherApiOptions _weatherOptions;
 
-        public ApiCalling(IHttpClientFactory httpClientFactory)
+        public ApiCalling(IHttpClientFactory httpClientFactory, IConfiguration configuration, IOptionsSnapshot<WeatherApiOptions> weatherOptions)
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
+            _weatherOptions = weatherOptions.Value;
         }
 
         [HttpGet]
         public async Task<string> Get(string cityname)
         {
-            var url =
-                $"http://api.weatherapi.com/v1/astronomy.json?key=a797fbce57e548daa0842806220411&q={cityname}&dt=2022-11-04";
+            // string baseUrl = _configuration.GetValue<string>("WeatherApi:url");
+            // string key = _configuration.GetValue<string>("WeatherApi:key");
+
+            string baseUrl = _weatherOptions.Url;
+            string key = _weatherOptions.Key;
+            
+            
+            string url = $"{baseUrl}?key={key}&q={cityname}&dt=2022-11-04";
             // var httpClient = new HttpClient()
             // Default Client
             // var httpClient = _httpClientFactory.CreateClient();
