@@ -30,6 +30,7 @@ namespace TweeterBackend.Controllers.v1
             // Named Client
             var httpClient = _httpClientFactory.CreateClient("weather");
             var response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
     }

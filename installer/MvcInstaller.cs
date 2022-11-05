@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Polly;
 using TweeterBackend.Options;
 
 namespace TweeterBackend.installer
@@ -9,9 +11,9 @@ namespace TweeterBackend.installer
     public class MvcInstaller : IInstaller
     {
         public readonly string MyAllowSpecificOrigins = "Version01_CORS_Policy";
+
         void IInstaller.InstallerService(IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -25,16 +27,26 @@ namespace TweeterBackend.installer
             // services.AddResponseCaching();
             services.AddRouting(options =>
             {
-                options.ConstraintMap.Add("CustomConstraintTest",typeof(CustomRoutingConstraint));
+                options.ConstraintMap.Add("CustomConstraintTest", typeof(CustomRoutingConstraint));
             });
 
             // services.AddHttpClient();
+            var timeout = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(5));
             // Named Client
-            services.AddHttpClient("weather", client =>
-            {
-                client.BaseAddress = new Uri("http://api.weatherapi.com/v1/astronomy.json");
-            });
-            
+            services.AddHttpClient("weather",
+                    client => { client.BaseAddress = new Uri("http://api.weatherapi.com/v1/astronomy.json"); })
+                .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)))
+                .AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(3)))
+                .AddPolicyHandler(request =>
+                {
+                    if (request.Method == HttpMethod.Get)
+                    {
+                        return timeout;
+                    }
+
+                    return Policy.NoOpAsync<HttpResponseMessage>();
+                });
+
             services.AddControllersWithViews(); // for MVC
 
             services.AddSwaggerGen(x =>
