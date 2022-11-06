@@ -39,7 +39,7 @@ namespace TweeterBackend.Controllers.v1
         //{
         //    return $"Hello from Controller {name}";
         //}
-        
+
         [HttpGet("modelBindingPath")]
         public string Get([FromQuery] CustomBinding customBindedInstance)
         {
@@ -74,6 +74,6 @@ namespace TweeterBackend.Controllers.v1
         }
 
     }
-    
-    
+
+
 }

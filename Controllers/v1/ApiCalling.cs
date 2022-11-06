@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
+using System.Threading.Tasks;
 using TweeterBackend.Options;
 
 namespace TweeterBackend.Controllers.v1
@@ -34,8 +34,8 @@ namespace TweeterBackend.Controllers.v1
 
             string baseUrl = _weatherOptions.Url;
             string key = _weatherOptions.Key;
-            
-            
+
+
             string url = $"{baseUrl}?key={key}&q={cityname}&dt=2022-11-04";
             // var httpClient = new HttpClient()
             // Default Client

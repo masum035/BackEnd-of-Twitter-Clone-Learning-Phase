@@ -20,7 +20,7 @@ namespace TweeterBackend
                 .ConfigureLogging(builder =>
                 {
                     builder.ClearProviders();
-                    
+
                     builder.AddConsole();
                     // Default port for visualizing the log using Seq https://localhost/5341 
                     builder.AddSeq(); // From Package Seq.Extension.Logging

@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Models;
 
@@ -17,7 +17,7 @@ namespace TweeterBackend.Middlewares
             _logger = logger;
             _next = next;
         }
-        
+
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
@@ -40,7 +40,7 @@ namespace TweeterBackend.Middlewares
         {
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            
+
             await httpContext.Response.WriteAsync(new ErrorDetails()
             {
                 StatusCode = httpContext.Response.StatusCode,

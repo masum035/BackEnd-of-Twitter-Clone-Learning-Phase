@@ -1,11 +1,12 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Polly;
+using System;
+using System.Net.Http;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Options;
+using TweeterBackend.Services;
 
 namespace TweeterBackend.installer
 {
@@ -49,9 +50,11 @@ namespace TweeterBackend.installer
                 });
 
             services.Configure<WeatherApiOptions>(configuration.GetSection(WeatherApiOptions.WeatherApiInApsSettings));
-            
+
             services.AddSingleton<ILoggerManager, LoggerManager>();
-            
+
+            services.AddHostedService<BackgroundService01>();
+
             services.AddControllersWithViews(); // for MVC
 
             services.AddSwaggerGen(x =>
