@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+using TweeterBackend.Contracts.v1;
 using TweeterBackend.Models;
 
 namespace TweeterBackend.Middlewares
@@ -10,11 +10,11 @@ namespace TweeterBackend.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        // private readonly ILogger _logger;
+        private readonly ILoggerManager _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILoggerManager logger)
         {
-            // _logger = logger;
+            _logger = logger;
             _next = next;
         }
         
@@ -26,12 +26,12 @@ namespace TweeterBackend.Middlewares
             }
             catch (AccessViolationException avEx)
             {
-                // _logger.LogError($"A new violation exception has been thrown: {avEx}");
+                _logger.LogError($"A new violation exception has been thrown: {avEx}");
                 await HandleExceptionAsync(httpContext, avEx);
             }
             catch (Exception ex)
             {
-                // _logger.LogError($"Something went wrong: {ex}");
+                _logger.LogError($"Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

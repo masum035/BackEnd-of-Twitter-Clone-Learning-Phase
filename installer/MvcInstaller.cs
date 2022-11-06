@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Polly;
+using TweeterBackend.Contracts.v1;
 using TweeterBackend.Options;
 
 namespace TweeterBackend.installer
@@ -48,6 +49,8 @@ namespace TweeterBackend.installer
                 });
 
             services.Configure<WeatherApiOptions>(configuration.GetSection(WeatherApiOptions.WeatherApiInApsSettings));
+            
+            services.AddSingleton<ILoggerManager, LoggerManager>();
             
             services.AddControllersWithViews(); // for MVC
 
