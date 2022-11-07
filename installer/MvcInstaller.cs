@@ -4,11 +4,10 @@ using Microsoft.OpenApi.Models;
 using Polly;
 using System;
 using System.Net.Http;
-using TweeterBackend.ActionsFilter;
 using TweeterBackend.Contracts.v1;
-using TweeterBackend.Filters;
 using TweeterBackend.Options;
 using TweeterBackend.Services;
+using TweeterBackend.Filters;
 
 namespace TweeterBackend.installer
 {

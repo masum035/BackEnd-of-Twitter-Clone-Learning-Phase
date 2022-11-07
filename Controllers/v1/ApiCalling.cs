@@ -30,6 +30,8 @@ namespace TweeterBackend.Controllers.v1
         [HttpGet]
         [AttributeSyncActionFilter("weather api")]
         [AttributeAsyncActionFilter("weather api")]
+        [AttributeAsyncResourceFilter("weather api")]
+        [AttributeAsyncExceptionFilter("weather api")]
         public async Task<string> Get(string cityname)
         {
             // string baseUrl = _configuration.GetValue<string>("WeatherApi:url");
