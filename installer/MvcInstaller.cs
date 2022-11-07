@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Polly;
 using System;
 using System.Net.Http;
+using TweeterBackend.ActionsFilter;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Options;
 using TweeterBackend.Services;
@@ -55,7 +56,10 @@ namespace TweeterBackend.installer
 
             services.AddHostedService<BackgroundService01>();
 
-            services.AddControllersWithViews(); // for MVC
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new GlobalActionFilter());
+            }); // for MVC with global Filters
 
             services.AddSwaggerGen(x =>
             {

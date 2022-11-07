@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using System.Threading.Tasks;
+using TweeterBackend.ActionsFilter;
 using TweeterBackend.Options;
 
 namespace TweeterBackend.Controllers.v1
@@ -27,6 +28,8 @@ namespace TweeterBackend.Controllers.v1
         }
 
         [HttpGet]
+        [AttributeAsyncActionFilter("async controller filter")]
+        [AttributeSyncActionFilter("weather api")]
         public async Task<string> Get(string cityname)
         {
             // string baseUrl = _configuration.GetValue<string>("WeatherApi:url");
