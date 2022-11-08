@@ -11,6 +11,7 @@ using System.IO;
 using TweeterBackend.installer;
 using TweeterBackend.Middlewares;
 using TweeterBackend.Options;
+using TweeterBackend.SignalR;
 
 namespace TweeterBackend
 {
@@ -79,6 +80,8 @@ namespace TweeterBackend
                 });
 
                 endpoints.MapControllers();
+
+                endpoints.MapHub<PresenceHub>("/hub/presence");
 
                 endpoints.MapControllerRoute(
                     name: "default",

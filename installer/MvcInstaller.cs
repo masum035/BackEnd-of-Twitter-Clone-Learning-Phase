@@ -61,6 +61,8 @@ namespace TweeterBackend.installer
                 options.Filters.Add(new GlobalActionFilter());
             }); // for MVC with global Filters
 
+            services.AddSignalR();
+            
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Tweeter Api", Version = "v1" });
