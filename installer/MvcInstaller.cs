@@ -4,10 +4,12 @@ using Microsoft.OpenApi.Models;
 using Polly;
 using System;
 using System.Net.Http;
+using Microsoft.Extensions.Options;
 using TweeterBackend.Contracts.v1;
 using TweeterBackend.Options;
 using TweeterBackend.Services;
 using TweeterBackend.Filters;
+using TweeterBackend.Models;
 
 namespace TweeterBackend.installer
 {
@@ -17,6 +19,16 @@ namespace TweeterBackend.installer
 
         void IInstaller.InstallerService(IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<SchoolDatabaseSettings>(
+                configuration.GetSection(nameof(SchoolDatabaseSettings)));
+            
+            services.AddSingleton<ISchoolDatabaseSettings>(provider =>
+                provider.GetRequiredService<IOptions<SchoolDatabaseSettings>>().Value);
+            
+            services.AddScoped<StudentService>();
+            
+            services.AddScoped<CourseService>();
+            
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
